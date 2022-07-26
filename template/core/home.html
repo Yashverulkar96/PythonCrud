@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+{% block title %}
+Home
+{% endblock title %}
+{% block main_content %}
+<section class="container mt-5">
+    <div class="row justify-content-around text-center">
+        <div>
+            <h1>CRUD application using Django</h1>
+        </div>
+        <div> 
+            <a type="button" class="btn btn-info" href="{% url 'add-student' %}"  style="float: right;">Add New Data</a>
+        <div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Roll</th>
+                  <th scope="col">City</th>
+                  <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for s in Studata %}
+                <tr>
+                  {% comment %} instead of forloop.counter we can show database id using s.id also {% endcomment %}
+                  <th scope="row">{{forloop.counter}}</th>
+                  <td>{{s.name}}</td>
+                  <td>{{s.roll}}</td>
+                  <td>{{s.city}}</td>
+                  <td class="aline-inline col-sm-1">
+                    <table>
+                      <tr>
+                        <td>
+                          <form action="{% url 'delete-student' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value={{s.id}}>
+                            <input type="submit" value="Delete" class="btn btn-danger">
+                          </form>
+                        </td>
+                        <td>
+                          <a href="{% url 'edit-student' s.id %}" class="btn btn-warning">Edit</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+{% endblock main_content %}
